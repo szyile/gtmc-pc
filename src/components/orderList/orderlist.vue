@@ -673,7 +673,7 @@
   },
   mounted() {
     this.getorderslist();
-    this.getordersnum();
+    //this.getordersnum();
     // 获取页面功能角色
     for (let i = 0; i < this.powerlist.length; i++) {
       for (let j = 0; j < this.powerlist[i].children.length; j++) {
