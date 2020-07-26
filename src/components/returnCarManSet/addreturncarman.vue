@@ -6,19 +6,20 @@
     </div>
     <el-form :model="form" :rules="FormRules" label-width="150px" class="el-found" ref="formName">
       <el-form-item prop="photo" label="头像：">
-          <img :src="form.photo" />
+          <img v-if="form.sex == 1" src="../../../static/images/user/male.png" style="width: 45px; height: 45px" />
+          <img v-else src="../../../static/images/user/female.png" style="width: 45px; height: 45px" />
        </el-form-item>
        <el-form-item prop="name" label="姓名：">
-         <el-input v-model.trim="form.name" placeholder="请填写接车人姓名(小于等于10)" :title="form.name" maxlength=32></el-input>
+         <el-input v-model.trim="form.name" placeholder="请填写接车人姓名(小于等于10)" :title="form.name" maxlength="10"></el-input>
        </el-form-item>
        <el-form-item prop="phone" label="手机号：">
-         <el-input v-model="form.phone" placeholder="请填写11位手机号码" maxlength=11></el-input>
+         <el-input v-model="form.phone" placeholder="请填写11位手机号码" maxlength='11'></el-input>
        </el-form-item>
        <el-form-item prop="sort" label="排序：">
-         <el-input v-model="form.sort" placeholder="请输入序号"></el-input>
+         <el-input v-model="form.sort" placeholder="请输入序号()" maxlength="9"></el-input>
        </el-form-item>
        <el-form-item prop="sex" label="性别：">
-         <el-radio-group v-model="form.sex" @change="sexPhoto">
+         <el-radio-group v-model="form.sex">
            <el-radio :label="'1'">男</el-radio>
            <el-radio :label="'0'">女</el-radio>
          </el-radio-group>
@@ -44,7 +45,6 @@ export default {
       returncarmanid: "",
       form: {
         returnCarManId: "",
-         photo: "../../../static/images/home/man.png",//头像
          name: "", // 接车人姓名
          phone: "", // 接车人手机号
          sort: "", // 接车人排序号
@@ -70,6 +70,7 @@ export default {
          ],
          sort: [
            { required: true, message: "排序号不能为空", trigger: "blur" },
+           { min:1,max:9, message: "排序号过大(小于等于9位)", trigger: "blur" },
            {
              pattern: /[0-9]/,
              message: "请输入正确的排序号",
@@ -119,9 +120,9 @@ export default {
      },
      sexPhoto(e){
        if( e == 1 ){
-         this.form.photo = '../../../static/images/home/man.png';
+         this.form.photo = '../../../static/images/user/male.png';
        } else{
-         this.form.photo = '../../../static/images/home/headurl.png';
+         this.form.photo = '../../../static/images/user/female.png';
        }
      },
      // 保存

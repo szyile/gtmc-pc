@@ -1,5 +1,7 @@
 <template>
   <el-container class="main">
+    <!-- 遮罩区域 首次登录弹窗 -->
+    <shade ref="shadee"></shade>
     <el-header style="height: 70px;">
       <el-col class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
         <img src="../../static/images/home/logo.png" alt />
@@ -28,16 +30,28 @@
     </el-header>
     <el-container>
       <el-aside width="230px" v-show="!collapsed">
-        <el-menu :default-active="$route.path" :default-openeds="menuarr" router @open="handleopen" @close="handleclose"
-          @select="handleselect">
+        <el-menu
+          ref="menu"
+          :default-active="$route.path"
+          :default-openeds="menuarr"
+          @open="handleopen"
+          @close="handleclose"
+          @select="handleselect"
+        >
           <div v-for="(item,index) in routeData" :key="index" v-show="item.isShow == '1'">
             <el-submenu :index="index+''" v-if="item.childrenNum > 0">
               <template slot="title">
+                
                 <i :class="item.icon"></i>
+                 <i v-show="item.name == '门店管理'"  :class="['fa','fa-television','fa-fw']"></i>
                 {{item.name}}
               </template>
-              <el-menu-item v-for="(child,index1) in item.children" :index="child.href" :key="index1"
-                v-show="child.isShow == '1'">{{child.name}}</el-menu-item>
+              <el-menu-item
+                v-for="(child,index1) in item.children"
+                :index="child.href"
+                :key="index1"
+                v-show="child.isShow == '1'"
+              >{{child.name}}</el-menu-item>
             </el-submenu>
           </div>
         </el-menu>
@@ -48,6 +62,7 @@
             <el-submenu :index="index+''" :class="collapsed?'el-home-width':''">
               <template slot="title">
                 <i :class="item.icon"></i>
+                <i v-show="item.name == '门店管理'"  :class="['fa','fa-television','fa-fw']"></i>
               </template>
             </el-submenu>
           </div>
@@ -81,8 +96,13 @@
 
 <script>
 import headurl from "../../static/images/home/headurl.png";
+// 引入遮罩组件
+import Shade from "@/components/Shade";
 import { userDetail, roleMenuList } from "../api/api";
 export default {
+  components: {
+    Shade,
+  },
   data() {
     return {
       sysName: "取送车服务",
@@ -92,18 +112,18 @@ export default {
       routeData: [],
       menuarr: [],
       roleid: "",
-      userId:""   //用户ID
+      userId: "", //用户ID
     };
   },
-  created(){
-    this.userId=localStorage.getItem("userId")
-    if(!this.userId){
-          this.$message({
-              offset: 100,
-              type: "warning",
-              message: "登录凭证过期，重新登录!"
-            });
-         this.$router.replace({ path: "/Login" });
+  created() {
+    this.userId = localStorage.getItem("userId");
+    if (!this.userId) {
+      this.$message({
+        offset: 100,
+        type: "warning",
+        message: "登录凭证过期，重新登录!",
+      });
+      this.$router.replace({ path: "/Login" });
     }
   },
   mounted() {
@@ -111,14 +131,16 @@ export default {
     this.screensize();
     this.userInfo();
     let _this = this;
-/*     setTimeout(function() {
-      _this.rolemenuload();
-    }, 500); */
-    window.onresize = function() {
+    /*     setTimeout(function() {
+          _this.rolemenuload();
+        }, 500); */
+    window.onresize = function () {
       _this.screensize();
     };
+    this.pushwidth();
   },
   methods: {
+    pushwidth() {},
     // 窗口大小变更事件
     screensize() {
       let screenHeight = document.documentElement.clientHeight; //窗口高度
@@ -128,16 +150,17 @@ export default {
     // 获取用户信息
     userInfo() {
       let para = {
-        userId: localStorage.getItem("userId")
+        userId: localStorage.getItem("userId"),
       };
-      userDetail(para).then(res => {
+      userDetail(para).then((res) => {
         if (res.header.code !== 10000000) {
           this.$message({
             offset: 100,
             message: res.header.message,
-            type: "error"
+            type: "error",
           });
         } else {
+          console.log
           this.roleid = res.body.roleId;
           localStorage.setItem("roleId", res.body.roleId); // 角色ID
           localStorage.setItem("roleCode", res.body.roleCode); // 角色英文名/编码
@@ -155,18 +178,18 @@ export default {
     // 角色权限菜单列表
     rolemenuload() {
       let para = {
-        roleId: this.roleid
+        roleId: this.roleid,
       };
-      roleMenuList(para).then(res => {
+      roleMenuList(para).then((res) => {
         if (res.header.code !== 10000000) {
           this.$message({
             offset: 100,
             message: res.header.message,
-            type: "error"
+            type: "error",
           });
         } else {
           let recordarr = res.body;
-          recordarr.sort(function(a, b) {
+          recordarr.sort(function (a, b) {
             return a.sort - b.sort;
           });
           let recordnewarr1 = [];
@@ -207,6 +230,7 @@ export default {
               }
             }
           }
+          // console.log(recordnewarr1)
           this.routeData = recordnewarr1;
           // 判断当前选中并展开菜单
           for (let i = 0; i < this.routeData.length; i++) {
@@ -230,8 +254,28 @@ export default {
     handleclose() {
       console.log("handleclose");
     },
-    handleselect(a, b) {
-      console.log("handleselect");
+    handleselect(key, keypath) {
+      let that = this
+      if (this.$route.path == "/storeview") {
+        if (
+          !localStorage.getItem("storeviewsave") &&
+          localStorage.getItem("isFirst") == 1 &&
+          localStorage.getItem("isAdmin") == 1
+        ) {
+          //
+          this.$alert("请先修改并保存销售店的下单设置", "温馨提示", {
+            confirmButtonText: "确定",
+            callback: (action) => {
+            },
+          });
+           return;
+        }
+
+       
+      }
+      this.$router.push({
+        path: key,
+      });
     },
     // 修改密码
     changepass() {
@@ -241,7 +285,7 @@ export default {
     logout() {
       var _this = this;
       this.$confirm("确认退出吗?", "提示", {
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           localStorage.removeItem("userId"); // 用户ID
@@ -261,7 +305,7 @@ export default {
     // 返回
     fanhui() {
       window.history.go(-1);
-    }
+    },
   },
   beforeRouteEnter(to, from, next) {
     let localToken = localStorage.getItem("token");
@@ -269,10 +313,10 @@ export default {
       next();
     } else {
       next({
-        path: "/login"
+        path: "/login",
       });
     }
-  }
+  },
 };
 </script>
 <style lang="less" scoped>

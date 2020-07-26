@@ -85,6 +85,9 @@
           <el-table-column prop="carNum" align="center" label="车牌号">
           </el-table-column>
           <el-table-column prop="frameNum" align="center" label="车架号">
+            <template slot-scope="scope">
+                <span>--</span>
+              </template>
           </el-table-column>
           <el-table-column prop="engineNum" align="center" label="发动机号">
           </el-table-column>

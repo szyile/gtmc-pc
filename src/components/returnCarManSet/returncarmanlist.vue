@@ -23,24 +23,23 @@
         <span class="right" v-if="power.indexOf(',添加接车人,') > -1" @click="addreturncarman"><i class="fa fa-plus fw"></i>
           添加</span>
       </div>
-      <el-table ref="multipleTable" border :data="tabledata" highlight-current-row v-loading="listLoading"
-        @selection-change="handleSelectionChange">
-        <el-table-column fixed="left" type="selection" align="center" width="50">
-        </el-table-column>
-        <el-table-column align="center" sortable label="头像">
+      <el-table ref="multipleTable" border :data="tabledata" highlight-current-row v-loading="listLoading" @selection-change="handleSelectionChange">
+        <el-table-column fixed="left" type="selection" align="center" width="50" label="选择"></el-table-column>
+        <el-table-column align="center" label="头像">
           <template slot-scope="scope">
-            <img :src="scope.row.photo" alt="">
+            <img v-if="scope.row.sex == 1" src="../../../static/images/user/male.png" style="width: 45px; height: 45px" />
+            <img v-else src="../../../static/images/user/female.png" style="width: 45px; height: 45px" />
           </template>
         </el-table-column>
         <el-table-column align="center" prop="name" label="姓名">
         </el-table-column>
-        <el-table-column align="center" sortable label="  性别">
+        <el-table-column align="center" label="  性别">
           <template slot-scope="scope">
             {{scope.row.sex == 1 ? "男" : ""}}
             {{scope.row.sex == 0 ? "女" : ""}}
           </template>
         </el-table-column>
-        <el-table-column align="center" sortable prop="phone" label="手机号">
+        <el-table-column align="center" prop="phone" label="手机号">
         </el-table-column>
         <el-table-column align="center" sortable label="接车状态">
           <template slot-scope="scope">
@@ -48,16 +47,13 @@
             {{scope.row.returnCarStatus == 0 ? "空闲" : ""}}
           </template>
         </el-table-column>
-        <el-table-column align="center" sortable prop="sort" label="排序">
+        <el-table-column align="center" prop="sort" label="排序">
         </el-table-column>
-        <el-table-column align="center" fixed="right" label="操作"
-          v-if="power.indexOf(',编辑,') > -1 || power.indexOf(',删除,') > -1">
+        <el-table-column align="center" fixed="right" label="操作" v-if="power.indexOf(',编辑,') > -1 || power.indexOf(',删除,') > -1">
           <template slot-scope="scope">
-            <el-button v-if="power.indexOf(',编辑,') > -1" class="el-button--table" size="small" icon="fa fa-pencil fa-fw"
-              @click="handleEdit(scope.$index, scope.row)">编辑
+            <el-button v-if="power.indexOf(',编辑,') > -1" class="el-button--table" size="small" icon="fa fa-pencil fa-fw" @click="handleEdit(scope.$index, scope.row)">编辑
             </el-button>
-            <el-button v-if="power.indexOf(',删除,') > -1" class="el-button--table" size="small" icon="fa fa-trash fa-fw"
-              @click="handleDel(scope.$index, scope.row)">删除
+            <el-button v-if="power.indexOf(',删除,') > -1" class="el-button--table" size="small" icon="fa fa-trash fa-fw" @click="handleDel(scope.$index, scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
@@ -67,25 +63,26 @@
     <!--工具条-->
     <el-col :span="24" class="toolbar">
       <div class="tool-left" v-if="power.indexOf(',批量删除接车人,') > -1">
-        <el-button icon="fa fa-check-square-o fa-fw" @click="allSelection()" :disabled="tabledata.length == 0">全选
+        <el-button :icon="isall?'fa fa-check-square-o fa-fw':'fa fa-square-o fa-fw'"
+         @click="allSelection()" :disabled="tabledata.length == 0">全选
         </el-button>
-        <el-button icon="fa fa-square-o fa-fw" @click="reverseSelection()" :disabled="tabledata.length == 0">反选
+        <el-button :icon="isagainst?'fa fa-check-square-o fa-fw':'fa fa-square-o fa-fw'" 
+        @click="reverseSelection()" :disabled="tabledata.length == 0">反选
         </el-button>
-        <el-button icon="fa fa-square-o fa-fw" @click="handleallDelete()" :disabled="tabledata.length == 0">删除
+        <el-button :icon="isdel?'fa fa-check-square-o fa-fw':'fa fa-square-o fa-fw'" @click="handleallDelete()" :disabled="tabledata.length == 0">删除
         </el-button>
       </div>
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50]"
-        :current-page="page" :page-size="pagesize" layout="sizes, prev, pager, next" :total="total">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50]" :current-page="page" :page-size="pagesize" layout="sizes, prev, pager, next" :total="total">
       </el-pagination>
     </el-col>
   </section>
 </template>
 
 <script>
-  import {batchDeleteReturnCarMan, deleteReturnCarMan, returnCarManList} from "../../api/api";
-  import {mapState} from "vuex";
+import { batchDeleteReturnCarMan, deleteReturnCarMan, returnCarManList } from "../../api/api";
+import { mapState } from "vuex";
 
-  export default {
+export default {
   data() {
     return {
       // 查询
@@ -94,6 +91,12 @@
       search_name1: "",//接车人姓名查询条件值
       search_id1: "",//接车人手机号查询条件值
 
+      //是否全选
+      isall : 0,
+      //是否反选
+      isagainst:0,
+      //是否可以批量删除
+      isdel:0,
       // 表格
       tabledata: [],
       sels: [], //列表选中列
@@ -112,7 +115,7 @@
   computed: {
     ...mapState({
       powerlist: state => state.power
-    })
+    }),
   },
   methods: {
     //获取接车人列表
@@ -120,7 +123,7 @@
       let para = {
         name: this.search_name,//接车人姓名
         phone: this.search_id, //接车人手机号
-        roleCode : localStorage.getItem("roleCode"),//当前用户角色编码
+        roleCode: localStorage.getItem("roleCode"),//当前用户角色编码
         current: this.page,
         size: this.pagesize
       };
@@ -133,8 +136,8 @@
             type: "error"
           });
         } else {
-          this.tabledata = (res.body&&res.body.records)?res.body.records:[];
-          this.total = (res.body&&res.body.total)?res.body.total:0;
+          this.tabledata = (res.body && res.body.records) ? res.body.records : [];
+          this.total = (res.body && res.body.total) ? res.body.total : 0;
         }
         this.listLoading = false;
       });
@@ -156,12 +159,17 @@
     SearchData() {
       this.search_name = this.search_name1;
       this.search_id = this.search_id1;
-      this.page=1;
+      this.page = 1;
       this.getTableData();
     },
 
     // 全选
     allSelection() {
+       if(this.sels.length == this.tabledata.length){
+        this.isall=true
+      }else{
+        this.isall=false
+      }
       this.$refs.multipleTable.toggleAllSelection(this.tabledata);
     },
 
@@ -170,11 +178,24 @@
       this.tabledata.forEach(row => {
         this.$refs.multipleTable.toggleRowSelection(row);
       });
+      
+      this.isagainst=!this.isagainst
     },
 
     // 选中某行
     handleSelectionChange(sels) {
       this.sels = sels;
+      // console.log(this.sels.length,this.tabledata.length)
+      if(this.sels.length == this.tabledata.length){
+        this.isall=true
+      }else{
+        this.isall=false
+      }
+      if(this.sels.length>=1){
+        this.isdel=true
+      }else{
+        this.isdel=false
+      }
     },
 
     // 编辑
@@ -196,68 +217,67 @@
     handleDel(index, row) {
       this.$confirm("确认删除该接车人吗?", "删除确认", {
         type: "warning"
+      }).then(() => {
+        let para = {
+          returnCarManId: row.returnCarManId
+        };
+        this.listLoading = true;
+        deleteReturnCarMan(para).then(res => {
+          if (res.header.code !== 10000000) {
+            this.$message({
+              offset: 100,
+              message: res.header.message,
+              type: "error"
+            });
+          } else {
+            this.$message({
+              offset: 100,
+              message: "删除成功！",
+              type: "success"
+            });
+            this.getTableData();
+          }
+          this.listLoading = false;
+        });
       })
-        .then(() => {
-          let para = {
-            returnCarManId: row.returnCarManId
-          };
-          this.listLoading = true;
-          deleteReturnCarMan(para).then(res => {
-            if (res.header.code !== 10000000) {
-              this.$message({
-                offset: 100,
-                message: res.header.message,
-                type: "error"
-              });
-            } else {
-              this.$message({
-                offset: 100,
-                message: "删除成功！",
-                type: "success"
-              });
-              this.getTableData();
-            }
-            this.listLoading = false;
-          });
-        })
-        .catch(() => {});
+        .catch(() => { });
     },
 
     //批量删除接车人
     handleallDelete() {
-
-       if(this.sels.length==0){
-         alert('请选择要删除的联系人');
-      this.$confirm("确认删除这批接车人吗?", "提示", {
-        type: "warning"
-      })
-        .then(() => {
-          let para = {
-            returnCarManIds: [],
-            remarks: ""
-          };
-          for (let i = 0; i < this.sels.length; i++) {
-            para.returnCarManIds.push(this.sels[i].returnCarManId);
-          }
-          batchDeleteReturnCarMan(para).then(res => {
-            if (res.header.code !== 10000000) {
-              this.$message({
-                offset: 100,
-                message: res.header.message,
-                type: "error"
-              });
-            } else {
-              this.$message({
-                offset: 100,
-                message: "删除成功！",
-                type: "success"
-              });
-              this.getTableData();
-            }
-          });
+      if (this.sels.length != 0) {
+        this.$confirm("确认删除这批接车人吗?", "提示", {
+          type: "warning"
         })
-        .catch(() => {});
-    }
+          .then(() => {
+            let para = {
+              returnCarManIds: [],
+              remarks: ""
+            };
+            for (let i = 0; i < this.sels.length; i++) {
+              para.returnCarManIds.push(this.sels[i].returnCarManId);
+            }
+            batchDeleteReturnCarMan(para).then(res => {
+              if (res.header.code !== 10000000) {
+                this.$message({
+                  offset: 100,
+                  message: res.header.message,
+                  type: "error"
+                });
+              } else {
+                this.$message({
+                  offset: 100,
+                  message: "删除成功！",
+                  type: "success"
+                });
+                this.getTableData();
+              }
+            });
+          })
+          .catch(() => { });
+      }else{
+        return this.$message.error("请选择需要删除的接车人")
+      }
     }
   },
   mounted() {

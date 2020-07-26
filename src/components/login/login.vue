@@ -183,8 +183,19 @@ export default {
             } else {
               localStorage.setItem("userId", res.body.userId); // 用户ID
               localStorage.setItem("loginName", res.body.loginName); // 用户登录名
+              localStorage.setItem('isFirst',res.body.isFirstLogin)
+              localStorage.setItem('old_isFirst',res.body.isFirstLogin)
+
+              localStorage.setItem("isAdmin",res.body.isDealerCodeRole); // token
               localStorage.setItem("token",res.body.token||''); // token
-              this.$router.push({ path: "/orderlist" });
+              // console.log(res.body)
+              if(res.body.isDealerCodeRole == 1 && res.body.isFirstLogin == 1){
+                  this.$router.push({ path: "/addstore"});
+              }else{
+                this.$router.push({ path: "/orderlist"})
+              }
+            
+              // console.log(res.body.isFirstLogin)
             }
             this.logining = false;
           });

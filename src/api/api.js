@@ -76,12 +76,16 @@ axios.interceptors.response.use(function(response) {
   return Promise.reject(error);
 });
 
-//let fetchcar = "https://test.icheyou.net/api";  //测试
+// let fetchcar = "https://test.icheyou.net/api";  //测试
 //let fetchcar = "/fetchcar";                    //开发
-//let fetchcar = 'https://iclub-padstest.gtmc.com.cn/api';//广丰测试
-//let fetchcar= 'https://iclub-pads.gtmc.com.cn/api';  //广丰正式
+let fetchcar = 'https://iclub-padstest.gtmc.com.cn/api';//广丰测试
+// let fetchcar = "http://172.20.10.10:8000/"
 
-let fetchcar = process.env.SERV_ADDR; // 接口服务地址 在config/*.env.js进行配置
+// let fetchcar = 'https://iclub-pads.gtmc.com.cn/api';  //广丰正式
+
+
+
+// let fetchcar = process.env.SERV_ADDR; // 接口服务地址 在config/*.env.js进行配置
 
 let toLogin =_debounce(function(){ //5秒内只能有一次跳转到登录页面
   _this.$message({
@@ -152,6 +156,20 @@ export const downOrder = params => { return axios.post(fetchcar +"/v1.0/w/pads/o
     /*   headers: {
           sign:doSign(params)
       } */
+}).then(res => res.data)};
+
+// 取车下单
+export const newGetOrder = params => { return axios.post(fetchcar +"/v1.0/w/pads/order/new-get-order", params, {
+  /*   headers: {
+        sign:doSign(params)
+    } */
+}).then(res => res.data)};
+
+// 送车下单
+export const newPushOrder = params => { return axios.post(fetchcar +"/v1.0/w/pads/order/new-push-order", params, {
+  /*   headers: {
+        sign:doSign(params)
+    } */
 }).then(res => res.data)};
 
 // 订单详情操作信息

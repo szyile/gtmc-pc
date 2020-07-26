@@ -26,6 +26,8 @@ import FoundActive from '@/components/operationSet/foundactive'
 import StoreList from '@/components/operationSet/storelist'
 // 运营管理-添加/编辑门店
 import AddStore from '@/components/operationSet/addstore'
+// 门店管理-编辑门店
+import StoreView from '@/components/operationSet/storeview'
 // 运营管理-单价配置
 import Configuration from '@/components/operationSet/configuration'
 // 系统设置-角色管理
@@ -118,7 +120,7 @@ export default new Router({
         iconCls: 'fa fa-television fa-fw',//图标样式class
       },
       children: [
-        { path: '/addstore', component: AddStore, name: 'AddStore_1', meta:{ title: '门店信息一览', needLogin: true}}
+        { path: '/storeview', component: StoreView, name: 'StoreView', meta:{ title: '门店信息一览', needLogin: true}}
       ]
   },
   {

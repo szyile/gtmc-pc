@@ -15,8 +15,8 @@ module.exports = {
         // 测试环境
         //target: 'http://193.112.107.241:8000/',  // 接口域名
         //target:'https://test.icheyou.net/devapi',
-        target: 'http://127.0.0.1:8000/',  // 本机 bff接口域名
-        //target: 'http://61.136.101.202:8000/',  // 测试环境 bff接口域名
+        target: 'http://172.20.10.10/',  // 本机 bff接口域名
+        // target: 'http://61.136.101.202:8000/',  // 测试环境 bff接口域名
         changeOrigin: true,  //是否跨域
         pathRewrite: {
             '^/fetchcar': ''
