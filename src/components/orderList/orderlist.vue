@@ -192,13 +192,18 @@
               {{ scope.row.assignTime}}
             </span>
             <span v-else>
-              —
+              -
             </span>
           </template>
         </el-table-column>
         <el-table-column align="center" sortable prop="createTime" label="提交时间">
         </el-table-column>
-        <el-table-column align="center" sortable prop="startTime" label="预约时间">
+        <el-table-column align="center" sortable prop="orderTime" label="预约时间">
+            <template slot-scope="scope">
+              <!-- {{scope.row.startTime !=null}} -->
+                <span v-if="scope.row.orderTime !=null">{{scope.row.orderTime}}</span>
+                <span v-else>-</span>
+            </template>
         </el-table-column>
         <el-table-column align="center" sortable prop="customerTel" label="车主账号">
         </el-table-column>
@@ -447,12 +452,6 @@ export default {
           this.search_allNum = res.body.records[0].allNum;
           this.search_overNum = res.body.records[0].overNum;
           this.search_normalNum = res.body.records[0].normalNum;
-        } else {
-          // console.log(123)
-          //如果后台没有数据直接返回0
-          this.search_allNum = 0;
-          this.search_overNum = 0;
-          this.search_normalNum = 0;
         }
         if (res.header.code !== 10000000) {
           this.$message({
@@ -580,6 +579,7 @@ export default {
 
     //派单正常
     normalTime() {
+      this.allTime
       this.store_avatar = 2;
       this.search_discern = 'normal';
       this.page = 1;

@@ -265,12 +265,14 @@ export default {
                 type: "success",
               });
               localStorage.setItem('storeviewsave', true)
+              this.dontSub=true;
               let _this = this;
+            
               setTimeout(function () {
                 _this.interval = ''
-                _this.$router.push({
-                  path: "/storelist",
-                });
+                // _this.$router.push({
+                //   path: "/storelist",
+                // });
               }, 1000);
             }
           });

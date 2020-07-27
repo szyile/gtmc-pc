@@ -210,6 +210,10 @@ export default {
         carNum: this.search_car,
         timeLeft: this.search_time
       };
+      if(window.localStorage.getItem('isAdmin')==1){
+        para.dealerCode=localStorage.getItem('loginName')
+        // console.log(para)
+      }
       this.listLoading = true;
       warnList(para).then(res => {
         //回调
