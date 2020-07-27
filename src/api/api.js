@@ -159,14 +159,14 @@ export const downOrder = params => { return axios.post(fetchcar +"/v1.0/w/pads/o
 }).then(res => res.data)};
 
 // 取车下单
-export const newGetOrder = params => { return axios.post(fetchcar +"/v1.0/m/pads/order/new-get-order", params, {
+export const newGetOrder = params => { return axios.post(fetchcar +"/v1.0/w/pads/order/new-get-order", params, {
   /*   headers: {
         sign:doSign(params)
     } */
 }).then(res => res.data)};
 
 // 送车下单
-export const newPushOrder = params => { return axios.post(fetchcar +"/v1.0/m/pads/order/new-push-order", params, {
+export const newPushOrder = params => { return axios.post(fetchcar +"/v1.0/w/pads/order/new-push-order", params, {
   /*   headers: {
         sign:doSign(params)
     } */
