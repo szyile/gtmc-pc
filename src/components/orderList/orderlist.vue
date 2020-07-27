@@ -170,7 +170,7 @@
         </el-table-column>
         <el-table-column align="center" sortable prop="orderId" label="订单编号">
           <template slot-scope="scope">
-            {{scope.row.overType==null}}
+            <!-- {{scope.row.overType==null}} -->
             <span v-if="scope.row.overType==2 &&scope.row.overType!=null">
               <img src="../../../static/images/home/info.png" width="25" height="25" /> {{ scope.row.orderId}}
             </span>
@@ -178,7 +178,7 @@
               <img src="../../../static/images/home/noinfo.png" width="25" height="25" /> {{ scope.row.orderId}}
             </span>
             <span v-else>
-              {{ scope.row.overType}}
+              {{ scope.row.orderId}}
             </span>
           </template>
         </el-table-column>

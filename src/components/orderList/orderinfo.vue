@@ -24,7 +24,7 @@
             <template slot-scope="scope">
               {{ scope.row.bussinessType == "1" ?  '预约保养' : '' }}
               {{ scope.row.bussinessType == "2" ?  '共享出行' : '' }}
-              {{ scope.row.bussinessType == "3" ?  '预约年审' : '' }}
+              {{ scope.row.bussinessType == "3" ?  '便捷下单' : '' }}
               {{ scope.row.bussinessType == "4" ?  '其他' : '' }}
             </template>
           </el-table-column>
