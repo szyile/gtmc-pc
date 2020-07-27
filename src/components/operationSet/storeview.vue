@@ -213,10 +213,8 @@ export default {
     },
     // 修改
     onEdit() {
-      
       this.isShowSave = true;
-      if(window.localStorage.getItem('old_isFirst')==1){
-        
+      if(window.localStorage.getItem('old_isFirst')==1&&this.radio!="自动"){
         this.visible = true;
         this.radio = '手动';
       }
