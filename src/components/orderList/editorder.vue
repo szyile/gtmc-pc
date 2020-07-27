@@ -73,7 +73,7 @@
           placeholder="选择预约上门取车时间"
         ></el-date-picker> -->
 
-        <el-date-picker v-model="form.orderTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择预约上门取车时间" @change="console.log(this.form.orderTime)">
+        <el-date-picker v-model="form.orderTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择预约上门取车时间" @change="aa">
         </el-date-picker>
 
       </el-form-item>
@@ -162,6 +162,9 @@ export default {
     console.log("cookie:", document.cookie);
   },
   methods: {
+    aa(){
+      console.log(this.form.orderTime)
+    },
     //加载页面
     mianload() {
       if (this.orderid) {
