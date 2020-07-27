@@ -16,7 +16,8 @@
          <el-input v-model="form.phone" placeholder="请填写11位手机号码" maxlength='11'></el-input>
        </el-form-item>
        <el-form-item prop="sort" label="排序：">
-         <el-input v-model="form.sort" placeholder="请输入序号()" maxlength="9"></el-input>
+         <el-input v-model="form.sort" placeholder="请输入序号(小于9等于位)" maxlength="9"></el-input>
+         <span class="info">序号数值越大，则在客户端排序越靠前，相同的数值则按照时间先后排序</span>
        </el-form-item>
        <el-form-item prop="sex" label="性别：">
          <el-radio-group v-model="form.sex">
@@ -214,6 +215,10 @@ export default {
  };
  </script>
  <style lang="less" scoped>
+   .info{
+     color: rgb(179, 179, 179);
+
+   }
  .main-wrap {
    background: #ffffff;
    .title {

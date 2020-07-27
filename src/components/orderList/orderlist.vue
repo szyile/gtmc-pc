@@ -24,8 +24,12 @@
     <el-col :span="24" class="alldata" v-if="roleCode == 'admin'">
       <el-form :inlineclass="true" v-loading="listLoading1">
         <el-form-item>
-          <span><i class="el-list-round" style="background:#58A3F7"></i>预下单</span>
+          <span><i class="el-list-round" style="background:#58A3F7"></i>待审核</span>
           <span>{{orderscount.waitCheckNum}}</span>
+        </el-form-item>
+         <el-form-item>
+          <span><i class="el-list-round" style="background:#FEC03D"></i>待下单</span>
+          <span>{{orderscount.waitDownNum}}</span>
         </el-form-item>
         <el-form-item>
           <span><i class="el-list-round" style="background:#FEC03D"></i>待派单</span>

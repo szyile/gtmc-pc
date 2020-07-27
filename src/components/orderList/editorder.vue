@@ -24,18 +24,8 @@
       </template>
       <template v-else>
         <el-form-item prop="startMan" label="出发地联系人：">
-          <el-select
-            v-model="form.startMan"
-            placeholder="请选择出发地联系人"
-            style="width:306px"
-            @change="startChange"
-          >
-            <el-option
-              v-for="(item,index) in objData"
-              :key="index"
-              :value="item.phone"
-              :label="item.name"
-            >
+          <el-select v-model="form.startMan" placeholder="请选择出发地联系人" style="width:306px" @change="startChange">
+            <el-option v-for="(item,index) in objData" :key="index" :value="item.phone" :label="item.name">
               <span style="float: left">{{ item.name }}</span>
               <span style="float: right;">{{ item.phone }}</span>
             </el-option>
@@ -53,18 +43,8 @@
       <!-- 上门取车，是客户到公司，所以这块需要显示的是店铺的联系人，可以进行选择 -->
       <template v-if="serviceType == 1 ">
         <el-form-item prop="endMan" label="目的地联系人：">
-          <el-select
-            v-model="form.endMan"
-            placeholder="请选择目的地联系人"
-            style="width:306px"
-            @change="endChange"
-          >
-            <el-option
-              v-for="(item,index) in objData"
-              :key="index"
-              :value="item.phone"
-              :label="item.name"
-            >
+          <el-select v-model="form.endMan" placeholder="请选择目的地联系人" style="width:306px" @change="endChange">
+            <el-option v-for="(item,index) in objData" :key="index" :value="item.phone" :label="item.name">
               <span style="float: left">{{ item.name }}</span>
               <span style="float: right;">{{ item.phone }}</span>
             </el-option>
@@ -93,13 +73,9 @@
           placeholder="选择预约上门取车时间"
         ></el-date-picker> -->
 
-         <el-date-picker
-      v-model="form.orderTime"
-      value-format="yyyy-MM-dd HH:mm:ss"
-      type="datetime"
-      placeholder="选择预约上门取车时间">
-    </el-date-picker>
-        
+        <el-date-picker v-model="form.orderTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择预约上门取车时间">
+        </el-date-picker>
+
       </el-form-item>
       <el-form-item prop="estimateMP" label="预估里程及价格：">
         <el-input v-model="form.estimateMP"></el-input>
@@ -280,105 +256,113 @@ export default {
     },
     //保存
     onSubmit() {
-      let that = this;
-      var but = document.getElementById("buttons");
-
-      this.$refs["formName"].validate((valid) => {
-        if (valid) {
-          let para = that.form;
-          if (that.orderid || that.orderid1) {
-            if (but.innerHTML == "确认修改") {
-              if (confirm("是否已和车主联络并取得车主确认？", "提示")) {
-                //编辑
-                para.orderId = that.orderid;
-                editOrder(para).then((res) => {
-                  if (res.header.code !== 10000000) {
-                    that.$message({
-                      offset: 100,
-                      message: res.header.message,
-                      type: "error",
-                    });
-                  } else {
-                    that.$message({
-                      offset: 100,
-                      message: "修改成功！",
-                      type: "success",
-                    });
-
-                    setTimeout(function () {
-                      that.$router.push({
-                        path: "/orderlist",
+      const conpar = {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+      this.$confirm('该订单确认向代价商下单吗', '下单确认', conpar).then(() => {
+        let that = this;
+        var but = document.getElementById("buttons");
+        this.$refs["formName"].validate((valid) => {
+          if (valid) {
+            let para = that.form;
+            if (that.orderid || that.orderid1) {
+              if (but.innerHTML == "确认修改") {
+                if (confirm("是否已和车主联络并取得车主确认？", "提示")) {
+                  //编辑
+                  para.orderId = that.orderid;
+                  editOrder(para).then((res) => {
+                    if (res.header.code !== 10000000) {
+                      that.$message({
+                        offset: 100,
+                        message: res.header.message,
+                        type: "error",
                       });
-                    }, 1000);
-                  }
-                });
-              }
-            } else {
-              para.orderId = that.orderid1;
-
-              if (that.serviceType == 1) {
-                // 取车下单，get
-                newGetOrder(para).then((res) => {
-                  if (res.header.code !== 10000000) {
-                    that.$message({
-                      offset: 100,
-                      message: res.header.message,
-                      type: "error",
-                    });
-                  } else {
-                    that.$message({
-                      offset: 100,
-                      message: "下单成功！",
-                      type: "success",
-                    });
-
-                    setTimeout(function () {
-                      that.$router.push({
-                        path: "/orderlist",
+                    } else {
+                      that.$message({
+                        offset: 100,
+                        message: "修改成功！",
+                        type: "success",
                       });
-                    }, 1000);
-                  }
-                });
+
+                      setTimeout(function () {
+                        that.$router.push({
+                          path: "/orderlist",
+                        });
+                      }, 1000);
+                    }
+                  });
+                }
               } else {
-                // 送车下单push
-                newPushOrder(para).then(res => {
-                  if (res.header.code !== 10000000) {
-                  that.$message({
-                    offset: 100,
-                    message: res.header.message,
-                    type: "error",
+                para.orderId = that.orderid1;
+
+                if (that.serviceType == 1) {
+                  // 取车下单，get
+                  newGetOrder(para).then((res) => {
+                    if (res.header.code !== 10000000) {
+                      that.$message({
+                        offset: 100,
+                        message: res.header.message,
+                        type: "error",
+                      });
+                    } else {
+                      that.$message({
+                        offset: 100,
+                        message: "下单成功！",
+                        type: "success",
+                      });
+
+                      setTimeout(function () {
+                        that.$router.push({
+                          path: "/orderlist",
+                        });
+                      }, 1000);
+                    }
                   });
                 } else {
-                  that.$message({
-                    offset: 100,
-                    message: "下单成功！",
-                    type: "success",
-                  });
-                
-                  setTimeout(function () {
-                    that.$router.push({
-                      path: "/orderlist",
-                    });
-                  }, 1000);
+                  // 送车下单push
+                  newPushOrder(para).then(res => {
+                    if (res.header.code !== 10000000) {
+                      that.$message({
+                        offset: 100,
+                        message: res.header.message,
+                        type: "error",
+                      });
+                    } else {
+                      that.$message({
+                        offset: 100,
+                        message: "下单成功！",
+                        type: "success",
+                      });
+
+                      setTimeout(function () {
+                        that.$router.push({
+                          path: "/orderlist",
+                        });
+                      }, 1000);
+                    }
+                  })
                 }
-                })
               }
+            } else {
+              that.$message({
+                offset: 100,
+                message: "参数orderid缺失！",
+                type: "warning",
+              });
             }
           } else {
             that.$message({
               offset: 100,
-              message: "参数orderid缺失！",
               type: "warning",
+              message: "信息录入格式不正确，请检查!",
             });
           }
-        } else {
-          that.$message({
-            offset: 100,
-            type: "warning",
-            message: "信息录入格式不正确，请检查!",
-          });
-        }
-      });
+        });
+      }).catch(() => {
+        return this.$message.info("取消了下单")
+      })
     },
     // 返回列表页面
     backListPage() {
@@ -390,7 +374,7 @@ export default {
             path: "/orderlist",
           });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
   },
   beforeRouteEnter(to, from, next) {
