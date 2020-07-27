@@ -89,7 +89,7 @@
         <el-form-item label="车牌号：">
           <el-input v-model="search_car1" placeholder="车牌号"></el-input>
         </el-form-item>
-        <el-form-item label="订单状态：">
+        <el-form-item label="订单状态：" >
           <el-select v-model="search_status1" placeholder="全部">
             <el-option label="全部" value=""></el-option>
             <el-option label="待审核" value="10"></el-option>
@@ -102,18 +102,17 @@
             <el-option label="已完成" value="70"></el-option>
             <el-option label="已关闭" value="80,81"></el-option>
           </el-select>
+          <img src="../../../static/images/home/prompt.png"  @click="ShowStatus(0)" />
         </el-form-item>
-        <img src="../../../static/images/home/prompt.png" @click="ShowStatus(0)" />
+
         <el-form-item label="订单类型：">
           <el-select v-model="search_businessType1">
             <el-option label="预约保养" value="0"></el-option>
             <el-option label="便捷下单" value="3"></el-option>
             <!-- <el-option label="其他" value="12"></el-option> -->
           </el-select>
-        </el-form-item>
-        <div class="statusImg">
           <img src="../../../static/images/home/prompt.png" @click="ShowStatus(1)" />
-        </div>
+        </el-form-item>
 
         <!-- <img src="../../../static/images/home/headurl.png" id="img" v-if="tu"/> -->
         <!-- 弹出层 -->
@@ -138,7 +137,7 @@
 
       <template>
         <div class="style" @click="allTime" :style="store_avatar==1?'background-color: #66b1ff;;color: white':'background-color: #f5f5f5'">
-          <img v-if="store_avatar==2" src="../../../static/images/ordelCount/allwhite.png" class="imgs" />
+          <img v-if="store_avatar==1" src="../../../static/images/ordelCount/allwhite.png" class="imgs" />
           <img v-else src="../../../static/images/ordelCount/allgray.png" class="imgs" />
           全部订单
           <span class="two">{{this.search_allNum}}</span>件
@@ -199,11 +198,11 @@
         <el-table-column align="center" sortable prop="createTime" label="提交时间">
         </el-table-column>
         <el-table-column align="center" sortable prop="orderTime" label="预约时间">
-            <template slot-scope="scope">
-              <!-- {{scope.row.startTime !=null}} -->
-                <span v-if="scope.row.orderTime !=null">{{scope.row.orderTime}}</span>
-                <span v-else>-</span>
-            </template>
+          <template slot-scope="scope">
+            <!-- {{scope.row.startTime !=null}} -->
+            <span v-if="scope.row.orderTime !=null">{{scope.row.orderTime}}</span>
+            <span v-else>-</span>
+          </template>
         </el-table-column>
         <el-table-column align="center" sortable prop="customerTel" label="车主账号">
         </el-table-column>
@@ -323,12 +322,12 @@
 </template>
 
 <script>
-import { batchCancel, orderCancel, orderCount,storeDetailByCode, orderList } from "../../api/api";
+import { batchCancel, orderCancel, orderCount, storeDetailByCode, orderList } from "../../api/api";
 import { mapState } from "vuex";
 export default {
   data() {
     return {
-      roleCode:localStorage.getItem('roleCode'),
+      roleCode: localStorage.getItem('roleCode'),
       //弹出图片
       tu: false,
 
@@ -355,7 +354,7 @@ export default {
       search_serviceType1: "",
       search_businessType: "",
       search_businessType1: "",
-      dealerCode:"",
+      dealerCode: "",
 
       //区别订单超时的
       search_discern: "",
@@ -440,8 +439,8 @@ export default {
         current: this.page,
         size: this.pagesize
       };
-      if(window.localStorage.getItem('isAdmin')==1){
-        para.dealerCode=localStorage.getItem('loginName')
+      if (window.localStorage.getItem('isAdmin') == 1) {
+        para.dealerCode = localStorage.getItem('loginName')
         // console.log(para)
       }
       //  console.log(para)
@@ -720,7 +719,7 @@ export default {
       this.getorderslist();
       this.getordersnum();
     }, 2000)
-     
+
 
     // 获取页面功能角色
     for (let i = 0; i < this.powerlist.length; i++) {
@@ -736,9 +735,9 @@ export default {
         }
       }
     }
-    setTimeout(()=>{
+    setTimeout(() => {
       this.roleCode = localStorage.getItem("roleCode")
-    },1000)
+    }, 1000)
   }
 };
 </script>
@@ -810,9 +809,9 @@ export default {
   /*字体颜色*/
 }
 .imgs {
-  // margin-right: 15px;
-  width: 25px;
-  height: 25px;
+  margin-right: 10px;
+  width: 15px;
+  height: 15px;
 }
 section {
   .title {
@@ -927,6 +926,14 @@ section {
         text-align: right;
       }
     }
+  }
+}
+.el-form-item{
+
+  img{
+    display: inline-block;
+    // padding-top: 5px;
+    width: 25px;
   }
 }
 </style>

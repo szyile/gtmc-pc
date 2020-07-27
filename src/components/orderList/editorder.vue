@@ -71,7 +71,7 @@
           </el-select>
         </el-form-item>
         <el-form-item prop="endManTel" label="目的地联系人手机号：">
-          <el-input v-model="form.endManTel" :disabled="true" placeholder="目的地联系人手机号"></el-input>
+          <el-input v-model="form.endManTel" placeholder="目的地联系人手机号"></el-input>
         </el-form-item>
       </template>
       <template v-else>
@@ -94,7 +94,7 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item prop="estimateMP" label="预估里程及价格：">
-        <el-input v-model="form.estimateMP" :disabled="true"></el-input>
+        <el-input v-model="form.estimateMP"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" id="buttons">确认修改</el-button>
@@ -326,7 +326,7 @@ export default {
 
                     setTimeout(function () {
                       that.$router.push({
-                        path: "/storelist",
+                        path: "/orderlist",
                       });
                     }, 1000);
                   }
@@ -349,7 +349,7 @@ export default {
                 
                   setTimeout(function () {
                     that.$router.push({
-                      path: "/storelist",
+                      path: "/orderlist",
                     });
                   }, 1000);
                 }
