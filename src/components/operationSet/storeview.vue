@@ -57,7 +57,7 @@
           </h3>
           <p>1.取送车向代驾商下单是否为自动或者手动的功能设置一年只能修改3次，超过3次之后则一年内不能进行修改。</p>
           <p>2.取送车向代驾商下单是否为自动或者手动的功能设置时间间隔要超过一个月，使用该功能之后一个月的时间内不能修改该功能。</p>
-          <p class="time">{{time}}S</p>
+          <p class="time" ref="time">{{time}}S</p>
           <span slot="footer" class="">
             <el-button @click="diaclose" :disabled="dontSub">取 消</el-button>
             <el-button type="primary" @click="diapush" :disabled="dontSub">确 定</el-button>
@@ -234,10 +234,14 @@ export default {
         if(this.time==0){
           //清除定时器
           window.clearInterval(this.interval)
+          // this.$refs['time'].$el
+          this.$refs['time'].style.display="none"
+          // console.log(this.$refs['time'])
           //开启弹窗的button
           this.dontSub=false
         }
       }, 1000);
+      this.$refs['time'].style.display="block"
     },
     // 保存
     onSubmit() {

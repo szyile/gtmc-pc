@@ -4,6 +4,7 @@
     <img @click="next" v-show="index==2" src="../../static/images/dianew/step_02.jpg" alt="">
     <img @click="next" v-show="index==3" src="../../static/images/dianew/step_03.jpg" alt="">
     <img @click="next" v-show="index==4" src="../../static/images/dianew/step_04.jpg" alt="">
+    <img @click="next" v-show="index==5" src="../../static/images/dianew/step_05.jpg" alt="">
   </el-container>
 </template>
 
@@ -32,7 +33,7 @@ export default {
   methods: {
     next() {
       this.index++
-      if (this.index == 5) {
+      if (this.index == 6) {
         //完成引导，跳转
         // this.isone = 1
         //防止首次登录页面刷新后再次出现引导
