@@ -73,7 +73,7 @@
           placeholder="选择预约上门取车时间"
         ></el-date-picker> -->
 
-        <el-date-picker v-model="form.orderTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择预约上门取车时间">
+        <el-date-picker v-model="form.orderTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择预约上门取车时间" @change="console.log(this.form.orderTime)">
         </el-date-picker>
 
       </el-form-item>
@@ -256,12 +256,7 @@ export default {
     },
     //保存
     onSubmit() {
-      const conpar = {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-      this.$confirm('该订单确认向代价商下单吗', '下单确认', conpar).then(() => {
+   
         let that = this;
         var but = document.getElementById("buttons");
         this.$refs["formName"].validate((valid) => {
@@ -360,9 +355,7 @@ export default {
             });
           }
         });
-      }).catch(() => {
-        return this.$message.info("取消了下单")
-      })
+   
     },
     // 返回列表页面
     backListPage() {

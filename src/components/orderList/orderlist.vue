@@ -935,6 +935,8 @@ section {
 .el-form-item{
 
   img{
+      // position: absolute;
+  transform: translate(25%,25%);
     display: inline-block;
     // padding-top: 5px;
     width: 25px;
