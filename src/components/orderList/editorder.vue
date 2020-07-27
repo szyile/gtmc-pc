@@ -86,12 +86,20 @@
         <el-input v-model="form.carNum" placeholder="请填写车牌号" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item prop="orderTime" label=" 预约上门取车时间：">
-        <el-date-picker
+        <!-- <el-date-picker
           v-model="form.orderTime"
           value-format="yyyy-MM-dd HH:mm:ss"
           type="datetime"
           placeholder="选择预约上门取车时间"
-        ></el-date-picker>
+        ></el-date-picker> -->
+
+         <el-date-picker
+      v-model="form.orderTime"
+      value-format="yyyy-MM-dd HH:mm:ss"
+      type="datetime"
+      placeholder="选择预约上门取车时间">
+    </el-date-picker>
+        
       </el-form-item>
       <el-form-item prop="estimateMP" label="预估里程及价格：">
         <el-input v-model="form.estimateMP"></el-input>

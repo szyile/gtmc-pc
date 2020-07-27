@@ -7,19 +7,19 @@
       </span>
     </div>
     <el-form :model="form" :rules="FormRules" label-width="180px" class="el-found" ref="formName">
-      <el-form-item prop="dealerName" label="门店名称：">
-        <el-input v-model="form.dealerName" placeholder="请填写门店名称" maxlength="32"></el-input>
+      <el-form-item prop="dealerName" label="门店名称：" > 
+        <el-input v-model="form.dealerName" placeholder="请填写门店名称" maxlength="32" :disabled="true"></el-input>
         <br />
         <i class="el-icon-info">门店名称只是作为辨别多个门店条目之用，并不显示在前台中</i>
       </el-form-item>
-      <el-form-item prop="dealerCode" label="门店代码ID：">
-        <el-input v-model="form.dealerCode" placeholder="请填写门店代码ID" maxlength="32"></el-input>
+      <el-form-item prop="dealerCode" label="门店代码ID：" >
+        <el-input v-model="form.dealerCode" placeholder="请填写门店代码ID" maxlength="32" :disabled="true"></el-input>
       </el-form-item>
-      <el-form-item prop="dealerRel" label="门店联系人：">
-        <el-input v-model="form.dealerRel" placeholder="门店联系人" maxlength="16"></el-input>
+      <el-form-item prop="dealerRel" label="门店联系人：" >
+        <el-input v-model="form.dealerRel" placeholder="门店联系人" maxlength="16" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item prop="dealerTel" label="联系人电话：">
-        <el-input v-model="form.dealerTel" placeholder="联系人电话" maxlength="16"></el-input>
+        <el-input v-model="form.dealerTel" placeholder="联系人电话" maxlength="16"  :disabled="true"></el-input>
       </el-form-item>
       <el-form-item prop="status" label="状态：">
         <el-switch active-value="2" inactive-value="1" v-model="form.status"></el-switch>
